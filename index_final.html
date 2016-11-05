@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src = "http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+	<!-- CSS styling -->
+	<style>
+		body{
+		text-align: center;
+		}
+		.chart1{
+		text-align: left;}
+		tr{
+		border: 1px solid black;
+		}
+	</style>
+	<script type="text/javascript">
+		"use strict";
+		function draw(data){
+		var margin = 75,
+        width = 1400 - margin,
+        height = 600 - margin;
+		 
+	// First chart : it shows relationship between a person's ticket and his survival Percentage
+		//svg variable definition 
+		var svg  = d3.select(".chart1").append("svg")
+					.attr("width", width+margin-500)
+					.attr("height", height+margin-200)
+					.append("g")
+					.attr("class", "chart");
+		//myChart dimple variable definition
+		var myChart = new dimple.chart(svg, data);
+		var x = myChart.addCategoryAxis("x", "Is_VIP");
+		x.fontSize = "12px";
+		x.title ="Person's Category (VIP / General  / Lower)"
+		var y = myChart.addMeasureAxis("y", "Survived");
+		y.fontSize = "12px";
+		y.tickFormat = "%";
+		y.title = "Survival Percentage";
+		//dimple addSeries aggregate method for calculating avg(percentage) of y axis
+		var mySeries = myChart.addSeries("Is_VIP", dimple.plot.bar);
+        mySeries.aggregate = dimple.aggregateMethod.avg;
+		
+		svg.append("text")
+			.attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+			.attr("y", myChart._yPixels() - 10)
+			.style("text-anchor", "middle")
+			.style("font-family", "sans-serif")
+			.style("font-size", "75%")
+			.style("font-weight", "bold")
+			.text("Distribution of Survival % vs Categorization acc to ticket fare");
+		
+		myChart.draw();
+		
+		// Second chart : it shows relationship between a person's Sex and his/her survival chance
+		//svg variable definition 	
+		var svg  = d3.select(".chart2").append("svg")
+					.attr("width", width+margin-500)
+					.attr("height", height+margin-200)
+					.append("g")
+					.attr("class", "chart");
+		
+		var myChart = new dimple.chart(svg, data);
+		var x = myChart.addCategoryAxis("x", ["Sex"]);
+		x.fontSize = "12px";
+		var y = myChart.addMeasureAxis("y", "Survived");
+		y.fontSize = "12px";
+		y.tickFormat="%";
+		y.title = "Survival Percentage";
+		//dimple addSeries aggregate method for calculating avg(percentage) of y axis
+		var mySeries = myChart.addSeries("Sex", dimple.plot.bar);
+		mySeries.aggregate = dimple.aggregateMethod.avg;
+		
+		svg.append("text")
+			.attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+			.attr("y", myChart._yPixels() - 10)
+			.style("text-anchor", "middle")
+			.style("font-family", "sans-serif")
+			.style("font-size", "75%")
+			.style("font-weight", "bold")
+			.text("Distribution of Survival % vs Sex Ratio");
+		myChart.draw();
+		// 3rd chart : it shows relationship between  age and his/her survival chance
+		//svg variable definition 	
+		var svg  = d3.select(".chart3").append("svg")
+					.attr("width", width+margin-500)
+					.attr("height", height+margin-200)
+					.append("g")
+					.attr("class", "chart");
+					
+		var myChart = new dimple.chart(svg, data);
+		var x = myChart.addCategoryAxis("x", "IsChild");
+		x.fontSize = "12px";
+		var y = myChart.addMeasureAxis("y", "Survived");
+		y.fontSize = "12px";
+		y.tickFormat="%";
+		y.title = "Survival Percentage";
+		//dimple addSeries aggregate method for calculating avg(percentage) of y axis
+		var mySeries = myChart.addSeries("IsChild", dimple.plot.bar);
+		mySeries.aggregate = dimple.aggregateMethod.avg;
+		svg.append("text")
+			.attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+			.attr("y", myChart._yPixels() - 10)
+			.style("text-anchor", "middle")
+            .style("font-family", "sans-serif")
+            .style("font-size", "75%")
+			.style("font-weight", "bold")
+			.text("Distribution of Survival % vs Age Categorization");
+		myChart.draw();
+		};
+	</script>
+</head>
+	<body class="container">
+		<h2>Project 6: Data Visualizations of Titanic Dataset</h2>
+		<h3>Submitted By : RAHUL SAXENA </h3>
+		<hr>
+		<table style="width:100%">
+			<tr>
+				<td style="width:50%" class="chart1"/>
+				<td style="text-align:justify; margin-right:20px;"	>
+					<h3 style="text-align:left;">Survival of Passengers according to Ticket Fare</h3>
+					<p >In this graph, we categorized passengers in 3 categories:
+					<ul>
+						<li> VIP : 10% passengers paying maximum fare </li>
+						<li> Lower Class : Passengers travelling with fare=$0, i.e, they maybe staff or staff's friend travelling with free passes </li>
+						<li> General : Normal passenger who are paying more than 0$ and less than that paid by VIPs. </li>
+					</ul>
+					<p>This graph clearly illustrates that VIPs survived more. VIPs survival chance is <b>75%</b>.</p>
+					<p>Survival rate of Lower class people is very less. Only <b>7% survived</b>. </p>
+					<p>Survival rate of General class people is more than Lower but less than VIPs. Only <b>35% of General Class passengers survived</b>. </p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%; padding-top: 40px" class="chart2"/>
+				<td style="text-align:justify; margin-right:20px;"	>
+					<h3 >Survival of Passengers according to Gender(Male / Female)</h3>
+					<p>Using the following visualization, we are trying to understand the survival rate of passengers according to Gender. During our analysis phase, we analyzed that 577 males and 314 females were travelling. It means there were more Male passengers in ship.</p>
+					<p>Graph shows that survival rate of <b>Female passengers is 74%</b> and <b>Male passengers is 19%</b>.</p>	
+					<p>Its clear that <b>females were preferred over male passengers</b>.</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:50%; padding-top: 40px" class="chart3"/>
+				<td style="text-align:justify; margin-right:20px;">
+					<h3 >Survival of Passengers according to Age</h3>
+					<p >In analysis phase, we analyzed that 	
+					<ul>
+						<li>No. of children=113 (12.68% of total)</li>
+						<li>No. of Senior Citizen= 22 (2.47% of total)</li>
+						<li>No. of Adults= 756 (84.85% of total)</li>
+					</ul>
+					</p>
+					<p>From this visualization its pretty clear that <b>probablity of survival</b> for a <b>child(54%)</b> is much higher than <b>adults(37%)</b> and <b>senior citizen(23%)</b>.</p>
+					<p>Senior citizens were given least priority to be saved</p>
+				</td>
+			</tr>
+			
+		</table>
+		<div style="text-align:center">
+			<h3> From the above visualizations of the dataset of passengers on Titanic Ship, we can guess that partiality was done in saving passengers. </h3>
+			<h3>Priority for saving was given to Upper Class , Females and Children.</h3>
+		</div>
+	
+	<script type="text/javascript">
+	<!-- data uploading js component-->
+	d3.csv("titanic_updated.csv",draw);
+	</script>
+</body>
+</html>	
